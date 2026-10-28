@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/carlos-space/fact-kit/compare/fact-kit-go/v0.4.0-alpha.1...fact-kit-go/v0.4.0) (2026-10-28)
+
+
+### chore
+
+* **release/v0.4:** fact-kit-go 0.4.0 ([a39f3bf](https://github.com/carlos-space/fact-kit/commit/a39f3bf4cda50386ed906618925b45fded60f337))
+
 ## [0.4.0-alpha.1](https://github.com/carlos-space/fact-kit/compare/fact-kit-go/v0.3.0...fact-kit-go/v0.4.0-alpha.1) (2026-10-28)
 
 
