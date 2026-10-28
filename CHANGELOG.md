@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0-alpha.2](https://github.com/carlos-space/fact-kit/compare/fact-kit-go/v0.3.0-alpha.1...fact-kit-go/v0.3.0-alpha.2) (2026-10-28)
+
+
+### chore
+
+* **release/v0.3:** fact-kit-go 0.3.0-alpha.2 ([c0f3258](https://github.com/carlos-space/fact-kit/commit/c0f3258a60f892730eebfdea360f4fb9fdb890bc))
+
 ## 0.3.0-alpha.1 (2026-10-27)
 
 
