@@ -19,6 +19,14 @@ type ReadFactsOptions struct {
 	OS       string
 }
 
+// Publish says where the described component is published and its name there.
+type Publish struct {
+	// Target is npm, pypi, crates, go or swift.
+	Target string
+	// Name is the name of the package on that target.
+	Name string
+}
+
 // FactReader holds the facts one reader sees from an installed fact package.
 //
 // Unlike the JS reader, it does not compare describes with an installed product, and it has no onRead hook.
@@ -31,6 +39,8 @@ type FactReader struct {
 	Entry string
 	// Describes names the component this entry describes and the version it covers.
 	Describes map[string]string
+	// Publish is where the component is published, or nil when the index has no publish. It checks no version.
+	Publish *Publish
 	// Facts are the facts this reader sees, each flattened to the row that applies.
 	Facts []SelectedFact
 
@@ -113,6 +123,10 @@ func ReadFacts(spec string, opts ReadFactsOptions) (*FactReader, error) {
 	for k, v := range objectOf(top["describes"]) {
 		describes[k] = v.String()
 	}
+	var publish *Publish
+	if p := objectOf(top["publish"]); p["target"].Type == gjson.String && p["name"].Type == gjson.String {
+		publish = &Publish{Target: p["target"].Str, Name: p["name"].Str}
+	}
 	entryName := entry
 	if e := top["entry"]; e.Type == gjson.String {
 		entryName = e.Str
@@ -126,6 +140,6 @@ func ReadFacts(spec string, opts ReadFactsOptions) (*FactReader, error) {
 		byID[f.ID] = i
 	}
 	return &FactReader{
-		Package: pkg, Version: version, Entry: entryName, Describes: describes, Facts: selected, byID: byID,
+		Package: pkg, Version: version, Entry: entryName, Describes: describes, Publish: publish, Facts: selected, byID: byID,
 	}, nil
 }

@@ -33,7 +33,7 @@ limit, err := reader.Value("demo.limit") // content.value，沒有這筆 fact �
 
 - `ReadFacts(spec, opts)` 從 `opts.Root` 往上找 `node_modules`，讀 `<套件>` 或 `<套件>/<路徑>` 的 `index.json`。`Root` 省略時用目前的工作目錄。
 - `SelectFacts(index []byte, opts SelectOptions)` 是純函式，輸入 `index.json` 的位元組，不碰檔案系統。
-- `FactReader` 有 `Package`、`Version`、`Entry`、`Describes`、`Facts`，以及 `Has`、`Get`、`Value`。
+- `FactReader` 有 `Package`、`Version`、`Entry`、`Describes`、`Publish`（`*Publish`，有 `Target` 與 `Name`，index 沒有 `publish` 時是 `nil`，不用來比對版本）、`Facts`，以及 `Has`、`Get`、`Value`。
 - `Version` 是 `*string`，因為空字串是無效版號，和「沒給版號」不同。Go 1.26 可以寫 `new("head")`。`Platform` 與 `OS` 是字串，空字串表示沒給。
 - `CompareVersions(a, b)` 與 `ReleaseLine(version)` 提供版號比較與發布線，版號必須是完整的 `X.Y.Z`。
 

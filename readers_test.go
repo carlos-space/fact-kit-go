@@ -2,6 +2,7 @@ package factkit_test
 
 import (
 	"errors"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -49,5 +50,40 @@ func TestErrorsAs(t *testing.T) {
 	var e *factkit.FactReadError
 	if !errors.As(err, &e) || e.Code != factkit.CodeNotFound {
 		t.Fatalf("got %v", err)
+	}
+}
+
+// publish comes back as the index says, and no version is checked.
+func TestReadFactsReturnsPublish(t *testing.T) {
+	root := t.TempDir()
+	dir := filepath.Join(root, "node_modules", "demo-facts")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	pkg := `{"name":"demo-facts","version":"1.0.0","exports":{"./index.json":"./index.json"}}`
+	if err := os.WriteFile(filepath.Join(dir, "package.json"), []byte(pkg), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	write := func(publish string) {
+		index := `{"indexFormat":"1.2","package":"demo-facts","entry":"","describes":{"demo-component":"0.50.0"}` + publish + `,"facts":[]}`
+		if err := os.WriteFile(filepath.Join(dir, "index.json"), []byte(index), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	write(`,"publish":{"target":"npm","name":"demo"}`)
+	reader, err := factkit.ReadFacts("demo-facts", factkit.ReadFactsOptions{Root: root})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if reader.Publish == nil || reader.Publish.Target != "npm" || reader.Publish.Name != "demo" {
+		t.Errorf("publish %+v", reader.Publish)
+	}
+	write("")
+	reader, err = factkit.ReadFacts("demo-facts", factkit.ReadFactsOptions{Root: root})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if reader.Publish != nil {
+		t.Errorf("publish %+v, want nil", reader.Publish)
 	}
 }
