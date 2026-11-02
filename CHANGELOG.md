@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0-alpha.1](https://github.com/carlos-space/fact-kit/compare/fact-kit-go/v0.4.0...fact-kit-go/v0.5.0-alpha.1) (2026-11-02)
+
+
+### Added
+
+* **readers:** 五種語言的讀取端讀得懂 index 格式 2.0 ([#98](https://github.com/carlos-space/fact-kit/issues/98)) ([f9df206](https://github.com/carlos-space/fact-kit/commit/f9df206403d9645034b4a8fb10ded3df3dd7f0c0))
+
 ## [0.4.0](https://github.com/carlos-space/fact-kit/compare/fact-kit-go/v0.4.0-alpha.1...fact-kit-go/v0.4.0) (2026-10-28)
 
 

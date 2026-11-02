@@ -269,7 +269,7 @@ func parseIndex(data []byte, label string) ([]gjson.Result, string, error) {
 		return nil, "", newError(CodeNotAnIndex, "%s is not a fact index", label)
 	}
 	o := objectOf(top)
-	// A missing field is format 1.0. Readers take any 1.x and ignore fields they do not know.
+	// A missing field is format 1.0. Readers take any 1.x or 2.x and ignore fields they do not know.
 	format := o["indexFormat"]
 	major := ""
 	if !format.Exists() {
@@ -279,9 +279,9 @@ func parseIndex(data []byte, label string) ([]gjson.Result, string, error) {
 			major = m[1]
 		}
 	}
-	if trimZeros(major) != "1" {
+	if trimZeros(major) != "1" && trimZeros(major) != "2" {
 		return nil, "", newError(CodeUnsupportedIndexFormat,
-			"%s has index format %s, and this reader takes 1.x", label, format.Raw)
+			"%s has index format %s, and this reader takes 1.x and 2.x", label, format.Raw)
 	}
 	if !o["facts"].IsArray() || o["package"].Type != gjson.String {
 		return nil, "", newError(CodeNotAnIndex, "%s is not a fact index", label)
@@ -362,7 +362,7 @@ func removed(fact object, rd reader, latest *semver.Version) bool {
 	return current != nil && current.Compare(gone) >= 0
 }
 
-// SelectFacts returns the facts one reader sees, from the bytes of an index.json of format 1.x.
+// SelectFacts returns the facts one reader sees, from the bytes of an index.json of format 1.x or 2.x.
 //
 // Each fact has rows (its variants, or the whole fact as one row). A row applies to the reader when its since
 // has been reached, its pending label is included, and its platforms and os conditions list the reader's

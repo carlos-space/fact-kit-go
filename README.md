@@ -55,9 +55,11 @@ limit, err := reader.Value("demo.limit") // content.value，沒有這筆 fact �
 | 常數                         | `Code` 的值                | 何時回傳                                                                        |
 | :--------------------------- | :------------------------- | :------------------------------------------------------------------------------ |
 | `CodeNotAnIndex`             | `not-an-index`             | 檔案不是 JSON，頂層不是物件，`facts` 不是陣列，或 `package` 不是字串            |
-| `CodeUnsupportedIndexFormat` | `unsupported-index-format` | `indexFormat` 的 major 不是 1，或不是 `<數字>.<數字>` 的字串                    |
+| `CodeUnsupportedIndexFormat` | `unsupported-index-format` | `indexFormat` 的 major 不是 1 也不是 2，或不是 `<數字>.<數字>` 的字串           |
 | `CodeNotFound`               | `not-found`                | 找不到套件、套件沒有 export 那個 `index.json`、檔案不存在，或 `spec` 寫法不合格 |
 | `CodeInvalidVersion`         | `invalid-version`          | 查詢的 `Version` 不是 `"head"` 也不是 semver，或 index 裡的 `since` 不是版號    |
+
+讀取端只用 `indexFormat` 判斷格式，缺這個欄位時當 1.0。頂層的 `formatVersion` 與 `dataFormatVersion` 不讀，也不回傳。
 
 ## 和 JS 版不同的地方
 
